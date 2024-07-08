@@ -3,7 +3,7 @@ import React from "react";
 const SearchForm = () => {
   return (
     <form className="  relative">
-      <button className="absolute left-2 -translate-y-1/2 top-1/2 p-1">
+      <button className="absolute xl:left-3 -translate-y-1/2 top-1/2 p-1">
         <svg
           width="17"
           height="16"
@@ -23,14 +23,14 @@ const SearchForm = () => {
         </svg>
       </button>
       <input
-        className=" w-[569px] rounded-full px-8 py-3 border-2 border-transparent focus:outline-none focus:border-blue-500 placeholder-gray-400 transition-all duration-300 shadow-md"
+        className=" xl:w-[569px] sm:placeholder:left-2 rounded-full xl:px-8 px-4 w-[300px]  xl:py-3 border-2 border-transparent focus:outline-none focus:border-gray-500 placeholder-gray-400 transition-all duration-300 shadow-md"
         placeholder="Search..."
         required
         type="text"
       />
       <button
         type="reset"
-        className="absolute right-3 -translate-y-1/2 top-1/2 p-1"
+        className="absolute xl:right-3 right-4 -translate-y-1/2 top-1/2 p-1"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

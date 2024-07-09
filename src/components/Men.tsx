@@ -38,15 +38,15 @@ const Men: React.FC = () => {
     };
 
     return (
-        <section className='w-[90%] flex flex-col mx-auto justify-center items-center my-20 overflow-hidden'>
+        <section className='w-[90%] flex flex-col mx-auto justify-start items-start my-20 overflow-hidden'>
             <div className='flex flex-row justify-between items-center w-full my-8'>
-                <h1 className='font-semibold text-5xl font-OpenSans text-black'>Daily Pick</h1>
-                <Link href={'#'} className='font-semibold font-OpenSans px-3 py-1 items-center flex border-2 rounded-xl border-black'>
+                <h1 className='font-semibold xl:text-5xl lg:text-4xl md:text-3xl sm:text-2xl font-OpenSans text-black'>For Men</h1>
+                <Link href={'#'} className='font-semibold hidden xl:flex font-OpenSans px-3 py-1 items-center lg:flex border-2 rounded-xl border-black'>
                     See More
                 </Link>
             </div>
 
-            <div className='w-[100%] grid grid-cols-4 gap-x-5 gap-y-5'>
+            <div className='w-[100%] grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-x-5 gap-y-5'>
                 {itemsData.map((item) => (
                     <div key={item.id} className='flex flex-col w-[100%] h-[352px] rounded-2xl overflow-hidden'>
                         <div
@@ -75,6 +75,9 @@ const Men: React.FC = () => {
                     </div>
                 ))}
             </div>
+            <Link href={'#'} className='font-semibold mt-5 xl:hidden flex font-OpenSans px-3 py-1 items-center lg:hidden border-2 rounded-xl border-black'>
+                See More
+            </Link>
         </section>
     );
 };

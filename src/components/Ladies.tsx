@@ -45,7 +45,6 @@ const Ladies: React.FC = () => {
                     See More
                 </Link>
             </div>
-
             <div className='w-[100%] grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-x-5 gap-y-5'>
                 {itemsData.map((item) => (
                     <div key={item.id} className='flex flex-col w-[100%] h-[352px] rounded-2xl overflow-hidden'>
@@ -58,8 +57,8 @@ const Ladies: React.FC = () => {
                                 backgroundSize: "cover",
                             }}
                         ></div>
-                        <div className='w-full h-[30%] bg-black flex flex-row gap-6 items-center px-3 justify-center'>
-                            <div className='flex flex-col text-white font-OpenSans'>
+                        <div className='w-full h-[30%] bg-black flex flex-row gap-12 items-center px-5 justify-between'>
+                            <div className='flex flex-col text-white font-OpenSans w-[300px]'>
                                 <h2 className='flex-nowrap font-semibold text-[12px]'>{item.title}</h2>
                                 <p>${item.price}</p>
                                 <div className='mb-[2px] border-t-2 border-white w-[90%]'></div>
@@ -67,7 +66,7 @@ const Ladies: React.FC = () => {
                             </div>
                             <button
                                 onClick={() => addItemToCart(item)}
-                                className='w-fit h-fit bg-white px-2 py-2 rounded-2xl flex flex-row gap-1 text-[12px] font-OpenSans text-black'
+                                className='w-full  h-fit justify-center items-center bg-white px-2 py-2 rounded-2xl flex flex-row gap-1 text-[12px] font-OpenSans text-black'
                             >
                                 Add to cart <Image src={CartIcon} alt='' />
                             </button>
@@ -78,6 +77,7 @@ const Ladies: React.FC = () => {
             <Link href={'#'} className='font-semibold mt-5 xl:hidden flex font-OpenSans px-3 py-1 items-center lg:hidden border-2 rounded-xl border-black'>
                 See More
             </Link>
+
         </section>
     );
 };

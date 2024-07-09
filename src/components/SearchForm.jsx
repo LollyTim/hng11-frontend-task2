@@ -23,7 +23,7 @@ const SearchForm = () => {
         </svg>
       </button>
       <input
-        className=" xl:w-[569px] sm:placeholder:left-2 rounded-full xl:px-8 px-4 w-[300px]  xl:py-3 border-2 border-transparent focus:outline-none focus:border-gray-500 placeholder-gray-400 transition-all duration-300 shadow-md"
+        className=" xl:w-[569px] sm:placeholder:left-2 rounded-full xl:px-8 px-6 w-[300px]  xl:py-3 border-2 border-transparent focus:outline-none focus:border-gray-500 placeholder-gray-400 transition-all duration-300 shadow-md"
         placeholder="Search..."
         required
         type="text"

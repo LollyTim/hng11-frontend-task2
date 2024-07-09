@@ -98,7 +98,7 @@ export default function PaymentModal() {
               />
             </div>
           </div>
-          <div className="flex flex-col xl:w-full">
+          <div className="flex flex-col w-full">
             <label htmlFor="deliveryAddress" className="font-OpenSans font-semibold">Delivery Address <span className='text-red-600'>*</span></label>
             <input
               type="text"
@@ -110,7 +110,7 @@ export default function PaymentModal() {
 
             />
           </div>
-          <div className="flex justify-between flex-col max-w-full px-14">
+          <div className="flex justify-between flex-col w-full px-14">
             <div className="flex flex-row w-full justify-between gap-1 mb-2">
               <p className="text-gray-400 text-sm">Subtotal:</p>
               <p className="font-semibold text-black font-OpenSans">

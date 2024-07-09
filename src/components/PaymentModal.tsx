@@ -34,10 +34,10 @@ export default function PaymentModal() {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center ">
-      <div className="bg-[#F2F2F3] justify-center items-center p-8 px-12 rounded-md xl:w-[608px] lg:w-[600px] md:w-[400px] sm:w-[300px] h-[980px] max-w-full max-h-full flex flex-col overflow-hidden">
+    <div className="absolute h-full inset-0 bg-black bg-opacity-50 flex items-center justify-center ">
+      <div className="bg-[#F2F2F3] justify-center items-center p-8 xl:px-12 md:px-10 px-8 rounded-md xl:w-[608px] lg:w-[600px] md:w-[400px] w-[390px] h-[980px] max-w-full max-h-full flex flex-col overflow-hidden">
         <h2 className="text-2xl font-bold mb-4">Payment</h2>
-        <form onSubmit={handleSubmit} className="space-y-4 flex flex-col justify-start items-start ">
+        <form onSubmit={handleSubmit} className="space-y-4 flex flex-col xl:justify-start justify-center xl:items-start w-full items-center ">
           <div className="flex flex-col w-full">
             <label htmlFor="email" className="font-OpenSans font-semibold">Email <span className='text-red-600'>*</span></label>
             <input
@@ -68,24 +68,24 @@ export default function PaymentModal() {
               placeholder='0000 0000 0000 0000'
               value={cardNumber}
               onChange={(e) => setCardNumber(e.target.value)}
-              className="border rounded-md p-2"
+              className="border rounded-md p-2 "
 
             />
           </div>
-          <div className=" flex flex-row gap-10">
-            <div className="flex flex-col w-full">
-              <label htmlFor="expirationDate" className="font-OpenSans font-semibold">Expiration Date <span className='text-red-600'>*</span></label>
+          <div className=" flex flex-row xl:gap-10 justify-between items-center gap-5 w-full">
+            <div className="flex flex-col xl:w-full  w-[150px] ">
+              <label htmlFor="expirationDate" className="font-OpenSans font-semibold sm:text-[14px]">Expiration Date <span className='text-red-600'>*</span></label>
               <input
                 type="text"
                 id="expirationDate"
                 value={expirationDate}
                 placeholder='14/04'
                 onChange={(e) => setExpirationDate(e.target.value)}
-                className="border rounded-md p-2"
+                className="border rounded-md p-2 "
 
               />
             </div>
-            <div className="flex flex-col w-full">
+            <div className="flex flex-col xl:w-full w-[150px] ">
               <label htmlFor="cvvCode" className="font-OpenSans font-semibold">CVV Code <span className='text-red-600'>*</span></label>
               <input
                 type="text"
@@ -93,12 +93,12 @@ export default function PaymentModal() {
                 id="cvvCode"
                 value={cvvCode}
                 onChange={(e) => setCvvCode(e.target.value)}
-                className="border rounded-md p-2"
+                className="border rounded-md p-2 "
 
               />
             </div>
           </div>
-          <div className="flex flex-col w-full">
+          <div className="flex flex-col xl:w-full">
             <label htmlFor="deliveryAddress" className="font-OpenSans font-semibold">Delivery Address <span className='text-red-600'>*</span></label>
             <input
               type="text"
@@ -110,7 +110,7 @@ export default function PaymentModal() {
 
             />
           </div>
-          <div className="flex justify-between flex-col w-full px-14">
+          <div className="flex justify-between flex-col max-w-full px-14">
             <div className="flex flex-row w-full justify-between gap-1 mb-2">
               <p className="text-gray-400 text-sm">Subtotal:</p>
               <p className="font-semibold text-black font-OpenSans">

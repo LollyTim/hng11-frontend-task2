@@ -35,7 +35,7 @@ export default function PaymentModal() {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center ">
-      <div className="bg-[#F2F2F3] justify-center items-center p-8 px-12 rounded-md w-[608px] h-[980px] max-w-full max-h-full flex flex-col overflow-hidden">
+      <div className="bg-[#F2F2F3] justify-center items-center p-8 px-12 rounded-md xl:w-[608px] lg:w-[600px] md:w-[400px] sm:w-[300px] h-[980px] max-w-full max-h-full flex flex-col overflow-hidden">
         <h2 className="text-2xl font-bold mb-4">Payment</h2>
         <form onSubmit={handleSubmit} className="space-y-4 flex flex-col justify-start items-start ">
           <div className="flex flex-col w-full">

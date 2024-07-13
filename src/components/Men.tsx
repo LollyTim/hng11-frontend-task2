@@ -53,7 +53,7 @@ const ForMen: React.FC = () => {
     return (
         <section className='w-[90%] flex flex-col mx-auto justify-start items-start my-20 overflow-hidden'>
             <div className='flex flex-row justify-between items-center w-full my-8'>
-                <h1 className='font-semibold xl:text-5xl lg:text-4xl md:text-3xl sm:text-2xl font-OpenSans text-black'>Daily Pick</h1>
+                <h1 className='font-semibold xl:text-5xl lg:text-4xl md:text-3xl sm:text-2xl font-OpenSans text-black'>For Men</h1>
                 <Link href={'#'} className='font-semibold hidden xl:flex font-OpenSans px-3 py-1 items-center lg:flex border-2 rounded-xl border-black'>
                     See More
                 </Link>

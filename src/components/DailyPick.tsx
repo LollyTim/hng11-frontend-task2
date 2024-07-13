@@ -88,7 +88,7 @@ const DailyPick: React.FC = () => {
                                     is_available: item.is_available,
                                     categories: item.categories  // Added categories field
                                 })}
-                                className='w-full h-fit justify-center items-center bg-white px-2 py-2 rounded-2xl flex flex-row gap-1 text-[12px] font-OpenSans text-black'
+                                className='w-full h-fit justify-center items-center bg-white px-2 py-2 rounded-2xl flex flex-row  text-[10px] font-OpenSans text-black'
                             >
                                 Add to cart <Image src={CartIcon} alt='' />
                             </button>

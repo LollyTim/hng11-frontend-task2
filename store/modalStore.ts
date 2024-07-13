@@ -14,7 +14,7 @@ interface ModalState {
 const useModalStore = create<ModalState>((set) => {
   const cart = useCartStore.getState().cart;
   const totalAmount = cart.reduce(
-    (total, item) => total + item.price * item.quantity,
+    (total, item) => total + item.current_price * item.quantity,
     0
   );
 

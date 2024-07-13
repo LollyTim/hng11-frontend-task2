@@ -1,30 +1,46 @@
-'use client';
+// components/Cart.tsx
+
+"use client";
 
 import Image from "next/image";
-import backIcon from "../../../images/icons/ep_back.svg";
-import useCartStore from "../../../store/cartStore";
-import useModalStore from "../../../store/modalStore";
+import { useEffect } from "react";
+import Link from "next/link";
+import backIcon from "../../../images/icons/blackCartIcon.svg"
 import successIcon from "../../../images/icons/ri_verified-badge-line.svg";
 import PaymentModal from "../../components/PaymentModal";
-import { useEffect } from "react";
+import useModalStore from "../../../store/modalStore";
+import useStore from "../../../store/cartStore";
 
-export default function Cart() {
-    const cart = useCartStore((state) => state.cart);
-    const removeFromCart = useCartStore((state) => state.removeFromCart);
-    const increaseQuantity = useCartStore((state) => state.increaseQuantity);
-    const decreaseQuantity = useCartStore((state) => state.decreaseQuantity);
+const Cart: React.FC = () => {
+    const { cart, removeFromCart, increaseQuantity, decreaseQuantity } = useStore((state) => ({
+        cart: state.cart,
+        removeFromCart: state.removeFromCart,
+        increaseQuantity: state.increaseQuantity,
+        decreaseQuantity: state.decreaseQuantity,
+    }));
 
     const openPaymentModal = useModalStore((state) => state.openPaymentModal);
     const closeSuccessModal = useModalStore((state) => state.closeSuccessModal);
     const isSuccessModalOpen = useModalStore((state) => state.isSuccessModalOpen);
 
-    const totalAmount = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+    const getItemPrice = (price: number) => {
+        return price || 0;
+    };
+
+    const cartTotal = cart.reduce((total, item) => {
+        const price = getItemPrice(item.current_price);
+        return total + price * item.quantity;
+    }, 0);
+
+    const formatPrice = (price: number) => {
+        return isNaN(price) ? "0.00" : price.toFixed(2);
+    };
 
     useEffect(() => {
         if (isSuccessModalOpen) {
             const timer = setTimeout(() => {
                 closeSuccessModal();
-                window.location.href = '/'; // Redirect to the home page
+                window.location.href = "/"; // Redirect to the home page
             }, 5000); // 5 seconds
 
             return () => clearTimeout(timer);
@@ -33,10 +49,10 @@ export default function Cart() {
 
     return (
         <main className="flex w-[90%] flex-col justify-start items-start mx-auto my-20">
-            <a href="/" className="flex flex-row gap-1">
+            <Link href="/" className="flex flex-row gap-1">
                 <Image src={backIcon} alt="backIcon" />
-                <p className="">Return to store</p>
-            </a>
+                <p>Return to store</p>
+            </Link>
 
             <div className="w-full flex flex-col justify-start items-start mt-6">
                 <p className="flex xl:text-5xl lg:text-4xl md:text-3xl sm:text-2xl font-OpenSans font-semibold">
@@ -48,7 +64,14 @@ export default function Cart() {
                         key={item.id}
                     >
                         <div className="flex xl:flex-row md:flex-row flex-col gap-4 justify-center items-center relative">
-                            <Image src={item.image} alt="" unoptimized width={250} height={234} className="w-[249px] h-[235px] rounded-lg" />
+                            <Image
+                                src={`https://api.timbu.cloud/images/${item.photos}`}
+                                alt=""
+                                unoptimized
+                                width={250}
+                                height={234}
+                                className="w-[249px] h-[235px] rounded-lg"
+                            />
 
                             <button
                                 className="absolute top-2 left-2 bg-white rounded-full px-2 py-1 text-black font-OpenSans text-[12px]"
@@ -64,7 +87,10 @@ export default function Cart() {
                                     Eligible for free shipping
                                 </p>
                                 <p className="font-OpenSans text-gray-400">
-                                    Price: <span className="font-semibold text-black">${item.price}</span>
+                                    Price:{" "}
+                                    <span className="font-semibold text-black">
+                                        ${formatPrice(getItemPrice(item.current_price))}
+                                    </span>
                                 </p>
 
                                 <div className="flex flex-row gap-1">
@@ -87,14 +113,15 @@ export default function Cart() {
                                 </div>
 
                                 <p className="text-gray-400 text-sm">
-                                    Total: ${(item.price * item.quantity).toFixed(2)}
+                                    Total: $
+                                    {formatPrice(getItemPrice(item.current_price) * item.quantity)}
                                 </p>
                             </div>
                         </div>
                         <div className="flex flex-col gap-1 ml-6 mb-2">
                             <p className="text-gray-400 text-sm">Subtotal</p>
                             <p className="font-semibold text-black font-OpenSans">
-                                ${(item.price * item.quantity).toFixed(2)}
+                                ${formatPrice(getItemPrice(item.current_price) * item.quantity)}
                             </p>
                         </div>
                     </div>
@@ -105,38 +132,37 @@ export default function Cart() {
                         <div className="flex flex-row justify-between px-2 items-center">
                             <p className="font-OpenSans">Subtotal</p>
                             <p className="font-bold text-black font-OpenSans">
-                                ${cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2)}
+                                ${formatPrice(cartTotal)}
                             </p>
                         </div>
                         <div className="flex flex-row justify-between px-2 items-center mb-3">
                             <p className="font-OpenSans">Delivery</p>
-                            <p className="font-bold text-black font-OpenSans">
-                                \\$0.00
-                            </p>
+                            <p className="font-bold text-black font-OpenSans">$0.00</p>
                         </div>
                         <div className="border-t w-full border-black"></div>
 
                         <div className="flex flex-row justify-between px-2 items-center">
                             <p className="font-OpenSans">Total</p>
                             <p className="font-bold text-black font-OpenSans">
-                                ${cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2)}
+                                ${formatPrice(cartTotal)}
                             </p>
                         </div>
                         <button
                             className="w-full font-OpenSans text-xl px-6 py-3 flex justify-center items-center text-white rounded-lg bg-black"
                             onClick={openPaymentModal}
                         >
-                            Pay ${cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2)}
+                            Pay ${formatPrice(cartTotal)}
                         </button>
                     </div>
                 </div>
             </div>
 
             {/* Payment Modal */}
-            {useModalStore((state) => state.isPaymentModalOpen) && <PaymentModal />}
+            {useModalStore((state) => state.isPaymentModalOpen && <PaymentModal />)}
+
 
             {/* Success Modal */}
-            {useModalStore((state) => state.isSuccessModalOpen) && (
+            {isSuccessModalOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
                     <div className="bg-white  p-8 rounded-md flex flex-col justify-center items-center w-[500px]">
                         <Image src={successIcon} alt="" />
@@ -147,4 +173,6 @@ export default function Cart() {
             )}
         </main>
     );
-}
+};
+
+export default Cart;

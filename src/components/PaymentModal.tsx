@@ -5,6 +5,7 @@
 import { useState } from 'react';
 import useModalStore from "../../store/modalStore";
 import useCartStore from "../../store/cartStore";
+import { IoArrowBack } from "react-icons/io5";
 
 export default function PaymentModal() {
   const clearCart = useCartStore((state) => state.clearCart);
@@ -40,8 +41,13 @@ export default function PaymentModal() {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center ">
-      <div className="bg-[#F2F2F3] justify-center items-center p-8 xl:px-12 md:px-10 px-8 rounded-md xl:w-[608px] lg:w-[600px] md:w-[400px] w-[390px] h-[980px] max-w-full max-h-full flex flex-col overflow-x-hidden overflow-y-auto">
-        <h2 className="text-2xl font-bold mb-4">Payment</h2>
+      <div className="bg-[#F2F2F3] relative justify-center items-center p-8 xl:px-12 md:px-10 px-8 rounded-md xl:w-[608px] lg:w-[600px] md:w-[400px] w-[390px] h-[980px] max-w-full max-h-full flex flex-col overflow-x-hidden overflow-y-auto">
+        <div className=' flex flex-row justify-center items-center '>
+          <button onClick={() => closePaymentModal()} className=' left-4 absolute'>
+            <IoArrowBack size={30} />
+          </button>
+          <h2 className="text-2xl font-bold mb-4">Payment</h2>
+        </div>
         <form onSubmit={handleSubmit} className="space-y-4 flex flex-col xl:justify-start justify-center xl:items-start w-full items-center ">
           <div className="flex flex-col w-full">
             <label htmlFor="email" className="font-OpenSans font-semibold">Email <span className='text-red-600'>*</span></label>

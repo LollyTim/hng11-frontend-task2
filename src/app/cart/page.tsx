@@ -4,6 +4,7 @@
 import Image from "next/image";
 import { useEffect } from "react";
 import Link from "next/link";
+
 import backIcon from "../../../images/icons/blackCartIcon.svg"
 import successIcon from "../../../images/icons/ri_verified-badge-line.svg";
 import PaymentModal from "../../components/PaymentModal";

@@ -5,8 +5,9 @@ import React, { useEffect, useState } from 'react';
 import CartIcon from "../../images/icons/blackCartIcon.svg";
 import Image from 'next/image';
 import useCartStore from '../../store/cartStore';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+// import { Toaster, toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
+import toast, { Toaster } from 'react-hot-toast';
 
 interface Item {
     id: string;
@@ -143,7 +144,7 @@ const ForMen: React.FC = () => {
             <Link href={'#'} className='font-semibold mt-5 xl:hidden flex font-OpenSans px-3 py-1 items-center lg:hidden border-2 rounded-xl border-black'>
                 See More
             </Link>
-            <ToastContainer />
+            <Toaster />
         </section>
     );
 };

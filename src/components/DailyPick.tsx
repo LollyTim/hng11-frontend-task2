@@ -2,11 +2,10 @@
 
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-import CartIcon from "../../images/icons/blackCartIcon.svg";
 import Image from 'next/image';
+import CartIcon from "../../images/icons/blackCartIcon.svg";
 import useCartStore from '../../store/cartStore';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import toast, { Toaster } from 'react-hot-toast';
 
 interface Item {
     id: string;
@@ -47,7 +46,7 @@ const DailyPick: React.FC = () => {
 
     useEffect(() => {
         fetchProducts();
-    }, []);
+    }, [fetchProducts]);
 
     const dailyPickProducts = products.filter(item =>
         item.categories.some(category => category.name === 'dailypick')
@@ -109,7 +108,6 @@ const DailyPick: React.FC = () => {
                                 <h2 className="flex-nowrap font-semibold text-[12px]">{item.name}</h2>
                                 <p>${item.current_price?.[0] ? item.current_price?.[0].NGN : 0}</p>
                                 <div className="mb-[2px] border-t-2 border-white w-[90%]"></div>
-                                {/* <p className="">{item.stock} unit left</p> */}
                             </div>
                             <button
                                 onClick={() => addItemToCart({
@@ -143,7 +141,7 @@ const DailyPick: React.FC = () => {
             <Link href={'#'} className="font-semibold mt-5 xl:hidden flex font-OpenSans px-3 py-1 items-center lg:hidden border-2 rounded-xl border-black">
                 See More
             </Link>
-            <ToastContainer />
+            <Toaster />
         </section>
     );
 };

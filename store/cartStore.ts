@@ -1,25 +1,21 @@
-// store/useStore.ts
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import getProducts from "../actions";
 
 interface Photo {
   url: string;
-  // other properties of photo if any
 }
 
 interface Price {
   NGN: number;
-  // other properties of price if any
 }
 
 interface Category {
   name: string;
-  // other properties of category if any
 }
 
 interface Product {
-  id: string; // id is a string
+  id: string;
   name: string;
   price: string | number;
   description: string;
@@ -27,7 +23,7 @@ interface Product {
   is_available: boolean;
   selling_price: string;
   current_price?: Price[];
-  categories: Category[]; // Added categories field
+  categories: Category[];
 }
 
 interface CartProduct {
@@ -36,7 +32,7 @@ interface CartProduct {
   current_price: number;
   photos: string;
   quantity: number;
-  categories: Category[]; // Added categories field
+  categories: Category[];
 }
 
 interface State {
@@ -89,7 +85,7 @@ const useStore = create<State>()(
                 `Invalid price for product: ${product.id}`,
                 product
               );
-              return state; // Don't add the product if the price is invalid
+              return state;
             }
             return {
               cart: [
@@ -126,7 +122,7 @@ const useStore = create<State>()(
         })),
     }),
     {
-      name: "cart", // Name of the item in the localStorage
+      name: "cart",
     }
   )
 );

@@ -1,11 +1,12 @@
-"use client"
+'use client';
 
 import Link from 'next/link';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import CartIcon from "../../images/icons/blackCartIcon.svg";
 import Image from 'next/image';
-import itemsData from "../../data/data.json";
 import useCartStore from '../../store/cartStore';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface Item {
     id: string;
@@ -14,7 +15,7 @@ interface Item {
     is_available: boolean;
     photos: string;
     quantity: number;
-    categories: { name: string }[];  // Added categories field
+    categories: { name: string }[];
 }
 
 interface Product {
@@ -23,11 +24,13 @@ interface Product {
     current_price: number;
     photos: string;
     quantity: number;
-    categories: { name: string }[];  // Added categories field
+    categories: { name: string }[];
 }
 
 const ForMen: React.FC = () => {
-    const { addToCart, increaseQuantity, products, decreaseQuantity, fetchProducts } = useCartStore();
+    const { addToCart, products, fetchProducts, loading } = useCartStore();
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 8;
 
     const addItemToCart = (item: Item) => {
         const product: Product = {
@@ -36,19 +39,49 @@ const ForMen: React.FC = () => {
             current_price: item.current_price,
             photos: item.photos,
             quantity: 1,
-            categories: item.categories  // Added categories field
+            categories: item.categories
         };
         addToCart(product);
+        toast.success(`${item.name} added to cart!`);
     };
 
     useEffect(() => {
         fetchProducts();
-    }, [])
+    }, []);
 
-    // Filter products by "ForMen" category
-    const ForMenProducts = products.filter(item =>
+    const forMenProducts = products.filter(item =>
         item.categories.some(category => category.name === 'dailypick')
     );
+
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = forMenProducts.slice(indexOfFirstItem, indexOfLastItem);
+
+    const totalPages = Math.ceil(forMenProducts.length / itemsPerPage);
+
+    const handleNextPage = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const handlePreviousPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
+    if (loading) {
+        return (
+            <section className="w-[90%] flex flex-col mx-auto justify-center items-center my-20">
+                <div className="w-full grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-x-5 gap-y-5">
+                    {Array.from({ length: 8 }).map((_, index) => (
+                        <div key={index} className="flex flex-col w-[100%] h-[352px] rounded-2xl overflow-hidden bg-gray-300 animate-pulse"></div>
+                    ))}
+                </div>
+            </section>
+        );
+    }
 
     return (
         <section className='w-[90%] flex flex-col mx-auto justify-start items-start my-20 overflow-hidden'>
@@ -60,7 +93,7 @@ const ForMen: React.FC = () => {
             </div>
 
             <div className='w-[100%] grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-x-5 gap-y-5'>
-                {ForMenProducts.map((item) => (
+                {currentItems.map((item) => (
                     <div key={item.id} className='flex flex-col w-[100%] h-[352px] rounded-2xl overflow-hidden'>
                         <div
                             className='flex flex-row w-full h-[70%] bg-gray-400'
@@ -96,9 +129,21 @@ const ForMen: React.FC = () => {
                     </div>
                 ))}
             </div>
+
+            <div className="flex justify-center items-center mt-5">
+                <button onClick={handlePreviousPage} disabled={currentPage === 1} className="px-3 py-1 mx-1 bg-gray-300 text-black rounded-md">
+                    Previous
+                </button>
+                <span className="mx-2">{currentPage} of {totalPages}</span>
+                <button onClick={handleNextPage} disabled={currentPage === totalPages} className="px-3 py-1 mx-1 bg-gray-300 text-black rounded-md">
+                    Next
+                </button>
+            </div>
+
             <Link href={'#'} className='font-semibold mt-5 xl:hidden flex font-OpenSans px-3 py-1 items-center lg:hidden border-2 rounded-xl border-black'>
                 See More
             </Link>
+            <ToastContainer />
         </section>
     );
 };

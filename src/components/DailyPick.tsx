@@ -1,11 +1,12 @@
-"use client"
+'use client';
 
 import Link from 'next/link';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import CartIcon from "../../images/icons/blackCartIcon.svg";
 import Image from 'next/image';
-import itemsData from "../../data/data.json";
 import useCartStore from '../../store/cartStore';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface Item {
     id: string;
@@ -14,7 +15,7 @@ interface Item {
     is_available: boolean;
     photos: string;
     quantity: number;
-    categories: { name: string }[];  // Added categories field
+    categories: { name: string }[];
 }
 
 interface Product {
@@ -23,11 +24,13 @@ interface Product {
     current_price: number;
     photos: string;
     quantity: number;
-    categories: { name: string }[];  // Added categories field
+    categories: { name: string }[];
 }
 
 const DailyPick: React.FC = () => {
-    const { addToCart, increaseQuantity, products, decreaseQuantity, fetchProducts } = useCartStore();
+    const { addToCart, products, fetchProducts, loading } = useCartStore();
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 8;
 
     const addItemToCart = (item: Item) => {
         const product: Product = {
@@ -36,34 +39,64 @@ const DailyPick: React.FC = () => {
             current_price: item.current_price,
             photos: item.photos,
             quantity: 1,
-            categories: item.categories  // Added categories field
+            categories: item.categories
         };
         addToCart(product);
+        toast.success(`${item.name} added to cart!`);
     };
 
     useEffect(() => {
         fetchProducts();
-    }, [])
+    }, []);
 
-    // Filter products by "dailypick" category
     const dailyPickProducts = products.filter(item =>
         item.categories.some(category => category.name === 'dailypick')
     );
 
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = dailyPickProducts.slice(indexOfFirstItem, indexOfLastItem);
+
+    const totalPages = Math.ceil(dailyPickProducts.length / itemsPerPage);
+
+    const handleNextPage = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const handlePreviousPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
+    if (loading) {
+        return (
+            <section className="w-[90%] flex flex-col mx-auto justify-center items-center my-20">
+                <div className="w-full grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-x-5 gap-y-5">
+                    {Array.from({ length: 8 }).map((_, index) => (
+                        <div key={index} className="flex flex-col w-[100%] h-[352px] rounded-2xl overflow-hidden bg-gray-300 animate-pulse"></div>
+                    ))}
+                </div>
+            </section>
+        );
+    }
+
     return (
-        <section className='w-[90%] flex flex-col mx-auto justify-start items-start my-20 overflow-hidden'>
-            <div className='flex flex-row justify-between items-center w-full my-8'>
-                <h1 className='font-semibold xl:text-5xl lg:text-4xl md:text-3xl sm:text-2xl font-OpenSans text-black'>Daily Pick</h1>
-                <Link href={'#'} className='font-semibold hidden xl:flex font-OpenSans px-3 py-1 items-center lg:flex border-2 rounded-xl border-black'>
+        <section className="w-[90%] flex flex-col mx-auto justify-start items-start my-20 overflow-hidden">
+            <div className="flex flex-row justify-between items-center w-full my-8">
+                <h1 className="font-semibold xl:text-5xl lg:text-4xl md:text-3xl sm:text-2xl font-OpenSans text-black">Daily Pick</h1>
+                <Link href={'#'} className="font-semibold hidden xl:flex font-OpenSans px-3 py-1 items-center lg:flex border-2 rounded-xl border-black">
                     See More
                 </Link>
             </div>
 
-            <div className='w-[100%] grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-x-5 gap-y-5'>
-                {dailyPickProducts.map((item) => (
-                    <div key={item.id} className='flex flex-col w-[100%] h-[352px] rounded-2xl overflow-hidden'>
+            <div className="w-[100%] grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-x-5 gap-y-5">
+                {currentItems.map((item) => (
+                    <div key={item.id} className="flex flex-col w-[100%] h-[352px] rounded-2xl overflow-hidden">
                         <div
-                            className='flex flex-row w-full h-[70%] bg-gray-400'
+                            className="flex flex-row w-full h-[70%] bg-gray-400"
                             style={{
                                 backgroundImage: `url(https://api.timbu.cloud/images/${item.photos?.[0]?.url})`,
                                 backgroundPosition: "center",
@@ -71,12 +104,12 @@ const DailyPick: React.FC = () => {
                                 backgroundSize: "cover",
                             }}
                         ></div>
-                        <div className='w-full h-[30%] bg-black flex flex-row gap-12 items-center px-5 justify-between'>
-                            <div className='flex flex-col text-white font-OpenSans w-[300px]'>
-                                <h2 className='flex-nowrap font-semibold text-[12px]'>{item.name}</h2>
+                        <div className="w-full h-[30%] bg-black flex flex-row gap-12 items-center px-5 justify-between">
+                            <div className="flex flex-col text-white font-OpenSans w-[300px]">
+                                <h2 className="flex-nowrap font-semibold text-[12px]">{item.name}</h2>
                                 <p>${item.current_price?.[0] ? item.current_price?.[0].NGN : 0}</p>
-                                <div className='mb-[2px] border-t-2 border-white w-[90%]'></div>
-                                {/* <p className=''>{item.stock} unit left</p> */}
+                                <div className="mb-[2px] border-t-2 border-white w-[90%]"></div>
+                                {/* <p className="">{item.stock} unit left</p> */}
                             </div>
                             <button
                                 onClick={() => addItemToCart({
@@ -86,9 +119,9 @@ const DailyPick: React.FC = () => {
                                     photos: item.photos?.[0]?.url!,
                                     quantity: 1,
                                     is_available: item.is_available,
-                                    categories: item.categories  // Added categories field
+                                    categories: item.categories
                                 })}
-                                className='w-full h-fit justify-center items-center bg-white px-2 py-2 rounded-2xl flex flex-row  text-[10px] font-OpenSans text-black'
+                                className="w-full h-fit justify-center items-center bg-white px-2 py-2 rounded-2xl flex flex-row  text-[10px] font-OpenSans text-black"
                             >
                                 Add to cart <Image src={CartIcon} alt='' />
                             </button>
@@ -96,9 +129,21 @@ const DailyPick: React.FC = () => {
                     </div>
                 ))}
             </div>
-            <Link href={'#'} className='font-semibold mt-5 xl:hidden flex font-OpenSans px-3 py-1 items-center lg:hidden border-2 rounded-xl border-black'>
+
+            <div className="flex justify-center items-center mt-5">
+                <button onClick={handlePreviousPage} disabled={currentPage === 1} className="px-3 py-1 mx-1 bg-gray-300 text-black rounded-md">
+                    Previous
+                </button>
+                <span className="mx-2">{currentPage} of {totalPages}</span>
+                <button onClick={handleNextPage} disabled={currentPage === totalPages} className="px-3 py-1 mx-1 bg-gray-300 text-black rounded-md">
+                    Next
+                </button>
+            </div>
+
+            <Link href={'#'} className="font-semibold mt-5 xl:hidden flex font-OpenSans px-3 py-1 items-center lg:hidden border-2 rounded-xl border-black">
                 See More
             </Link>
+            <ToastContainer />
         </section>
     );
 };

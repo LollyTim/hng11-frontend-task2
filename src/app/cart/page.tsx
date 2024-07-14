@@ -1,4 +1,3 @@
-// components/Cart.tsx
 
 "use client";
 
@@ -40,8 +39,8 @@ const Cart: React.FC = () => {
         if (isSuccessModalOpen) {
             const timer = setTimeout(() => {
                 closeSuccessModal();
-                window.location.href = "/"; // Redirect to the home page
-            }, 5000); // 5 seconds
+                window.location.href = "/";
+            }, 5000);
 
             return () => clearTimeout(timer);
         }

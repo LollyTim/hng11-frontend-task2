@@ -6,8 +6,7 @@ import CartIcon from "../../images/icons/blackCartIcon.svg";
 import Image from 'next/image';
 import useCartStore from '../../store/cartStore';
 import toast, { Toaster } from 'react-hot-toast';
-// import { Toaster, toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
+
 
 interface Item {
     id: string;

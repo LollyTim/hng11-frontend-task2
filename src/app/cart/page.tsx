@@ -12,8 +12,9 @@ import useModalStore from "../../../store/modalStore";
 import useStore from "../../../store/cartStore";
 
 const Cart: React.FC = () => {
-    const { cart, removeFromCart, increaseQuantity, decreaseQuantity } = useStore((state) => ({
+    const { cart, removeFromCart, increaseQuantity, decreaseQuantity, loading } = useStore((state) => ({
         cart: state.cart,
+        loading: state.loading,
         removeFromCart: state.removeFromCart,
         increaseQuantity: state.increaseQuantity,
         decreaseQuantity: state.decreaseQuantity,
@@ -21,6 +22,7 @@ const Cart: React.FC = () => {
 
     const openPaymentModal = useModalStore((state) => state.openPaymentModal);
     const closeSuccessModal = useModalStore((state) => state.closeSuccessModal);
+    const isPaymentModalOpen = useModalStore((state) => state.isPaymentModalOpen);
     const isSuccessModalOpen = useModalStore((state) => state.isSuccessModalOpen);
 
     const getItemPrice = (price: number) => {
@@ -46,6 +48,39 @@ const Cart: React.FC = () => {
             return () => clearTimeout(timer);
         }
     }, [isSuccessModalOpen, closeSuccessModal]);
+
+
+    if (loading) {
+        return (
+            <main className="flex w-[90%] flex-col justify-start items-start mx-auto my-20">
+                <div className="w-full flex flex-col justify-start items-start mt-6">
+                    <p className="flex xl:text-5xl lg:text-4xl md:text-3xl sm:text-2xl font-OpenSans font-semibold">
+                        Shopping Cart
+                    </p>
+                    {[...Array(3)].map((_, index) => (
+                        <div
+                            className="w-[100%] flex xl:flex-row flex-col md:flex-row xl:justify xl:items-end md:items-end sm:items-start xl:gap-6 border rounded-xl px-12 py-5 mt-4 animate-pulse"
+                            key={index}
+                        >
+                            <div className="flex xl:flex-row md:flex-row flex-col gap-4 justify-center items-center relative">
+                                <div className="w-[249px] h-[235px] rounded-lg bg-gray-300"></div>
+                                <div className="flex flex-col gap-2 py-5">
+                                    <div className="h-[28px] w-[250px] bg-gray-300 rounded-lg"></div>
+                                    <div className="h-[20px] w-[200px] bg-gray-300 rounded-lg"></div>
+                                    <div className="h-[20px] w-[150px] bg-gray-300 rounded-lg"></div>
+                                    <div className="h-[20px] w-[100px] bg-gray-300 rounded-lg"></div>
+                                </div>
+                            </div>
+                            <div className="flex flex-col gap-1 ml-6 mb-2">
+                                <div className="h-[20px] w-[100px] bg-gray-300 rounded-lg"></div>
+                                <div className="h-[20px] w-[150px] bg-gray-300 rounded-lg"></div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </main>
+        );
+    }
 
     return (
         <main className="flex w-[90%] flex-col justify-start items-start mx-auto my-20">
@@ -157,8 +192,7 @@ const Cart: React.FC = () => {
                 </div>
             </div>
 
-            {/* Payment Modal */}
-            {useModalStore((state) => state.isPaymentModalOpen && <PaymentModal />)}
+            {isPaymentModalOpen && <PaymentModal />}
 
 
             {/* Success Modal */}

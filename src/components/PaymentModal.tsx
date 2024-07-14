@@ -39,6 +39,9 @@ export default function PaymentModal() {
 
 
 
+
+
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center ">
       <div className="bg-[#F2F2F3] relative justify-center items-center p-8 xl:px-12 md:px-10 px-8 rounded-md xl:w-[608px] lg:w-[600px] md:w-[400px] w-[390px] h-[980px] max-w-full max-h-full flex flex-col overflow-x-hidden overflow-y-auto">
